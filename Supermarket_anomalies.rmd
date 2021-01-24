@@ -1,0 +1,51 @@
+---
+title: "R Notebook"
+author: eyan
+date: 23/01/2021
+output: html_notebook
+---
+```{r}
+library('tidyverse')
+library('anomalize')
+library('tibbletime')
+```
+
+```{r anomaly_detection}
+# Reading the sales logs
+url <- 'http://bit.ly/CarreFourSalesDataset'
+sales <- read.csv(url)
+head(sales)
+```
+```{r}
+str(sales)
+```
+```{r}
+# Changing the date column from a character to date column
+sales$Date <- as.Date(sales$Date, "%m/%d/%Y")
+str(sales)
+```
+```{r}
+# Creating a tible table from the sales logs
+table <- as_tbl_time(sales,index = Date)
+head(table,10)
+```
+```{r}
+# Ploting the logs to see how they are distributed
+ggplot(table,aes(Date,Sales))+ geom_point(fill='#222222')
+```
+```{r}
+# Grouping the dataset by date and geting the sums of the dates
+tb <- table %>%  
+  group_by(Date) %>%
+  summarise(Orders = sum(Sales))
+```
+
+```{r}
+# Ploting the anomalies in the dataset
+tb %>%
+  time_decompose(Orders) %>%
+  anomalize(remainder, method = "gesd") %>%
+  time_recompose() %>%
+  plot_anomalies(color_no = '#038b8d', color_yes = '#222222' )
+```
+A few anomalies in the dataset, with mostly high sales

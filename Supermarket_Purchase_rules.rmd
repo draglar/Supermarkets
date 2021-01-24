@@ -1,0 +1,99 @@
+---
+title: "R Notebook"
+author: eyan
+date: 23/01/2021
+output: html_notebook
+---
+A supermarket wishes to get a model that can create rules for the purchases made.
+```{r}
+# Getting the necessary libraries
+library('arules')
+```
+```{r }
+# loading the transactions data
+url <- 'http://bit.ly/SupermarketDatasetII'
+transactions <- read.transactions(url,sep = ',')
+transactions
+```
+```{r}
+# Descrobong the class of the transactions
+class(transactions)
+```
+classs transactions attributed to arules package
+```{r}
+# viewing forst 10 labels in the transactions
+inspect(transactions[1:10])
+```
+```{r}
+# creating a dataframe for the transactions
+items<-as.data.frame(itemLabels(transactions))
+colnames(items) <- "Item"
+length(items$Item)# Geting the length of unique items
+head(items,7) # Previewing the first 7 columns
+```
+```{r}
+summary(transactions)
+```
+119 unique items in the 7501 transactions
+```{r}
+# Exploring the frequency (item count) of some items
+itemFrequency(transactions[,1:8],type = "absolute")# total count
+print('**********************************************************')
+round(itemFrequency(transactions[,1:8],type = "relative")*100,2) # relative count
+```
+```{r}
+# Displaying top 10 most common items in the transactions
+# and the items whose relative importance is at least 8%
+#
+itemFrequencyPlot(transactions, topN = 10,col="#03664c")
+itemFrequencyPlot(transactions, support = 0.15,col="#53033f")
+```
+Mineral water,eggs and spaghetti are the most frequent items.
+Mineral water,eggs,spaghetti,french fries and chocolates are the most Important items in the supermarket.
+```{r}
+# Min Support as 0.001 and confidence as 0.8
+# absolute min support is floor( transactions/ supp)
+# confidence and number of rules are inversely proportional.
+# confidence seems to specify the minimum conficdence level of the rules
+# e.g support at 0.5 and confidence at 0.9
+# equals absolute min support count= 3750 and no rules
+rule <- apriori (transactions, parameter = list(supp = 0.001, conf = 0.80))
+rule
+```
+created 74 rules, for the dataset
+```{r}
+
+summary(rule)
+```
+The rules range from having 3 to 6 items.
+only one rule has 6 items though
+Most rules have 4 items
+None have 2 items in the rules because it's hard to predict what someone will buy just from just one item, there are a lot of combinations that could be made.
+```{r}
+# Observing the first 5 model rules
+inspect(rule[1:5])
+```
+customer is likely to buy product in the rhs if they have already picked items on the lhs with confidence as the confidence the model has in the transaction being made
+e.g. In rule 4 if someone buys mushroom cream sauce and pasta they are 95% likely to buy escalope
+
+```{r}
+# sorting the rules using confidence levels
+rules<-sort(rule, by="confidence", decreasing=TRUE)
+inspect(rules[1:5])
+```
+There were some rules with 100% confidence:
+if a customer buys french fries,mushroom cream sauce and pasta they are 100% likely to buy escalope. Which is an improvment of the previous rule if someone buys mushroom cream sauce and pasta they are 95% likely to buy escalope
+```{r}
+# getting rules specific to buying chocolate
+choco <- subset(rules, subset = rhs %pin% 'chocolate')
+choco<-sort(choco, by="confidence", decreasing=TRUE)
+inspect(choco)
+```
+
+There were only 2 rules concerning buying chocolate above 80% confidence level. These were:
+<ul>
+ <li>Customers buying escalope,french fries and shrimp had 88.89% likelihood of buying chocolate
+<li>Customers buying red wine and tomato sauce had a 80% likelihood of buying chocolate
+</ul>
+
+THe model was able to create rules for customer transactions in the supermarket.

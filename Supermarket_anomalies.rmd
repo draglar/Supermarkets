@@ -37,13 +37,13 @@ ggplot(table,aes(Date,Sales))+ geom_point(fill='#222222')
 # Grouping the dataset by date and geting the sums of the dates
 tb <- table %>%  
   group_by(Date) %>%
-  summarise(Orders = sum(Sales))
+  summarise(counts = sum(Sales))
 ```
 
 ```{r}
 # Ploting the anomalies in the dataset
 tb %>%
-  time_decompose(Orders) %>%
+  time_decompose(counts) %>%
   anomalize(remainder, method = "gesd") %>%
   time_recompose() %>%
   plot_anomalies(color_no = '#038b8d', color_yes = '#222222' )

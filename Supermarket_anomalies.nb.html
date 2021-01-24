@@ -339,20 +339,20 @@ ggplot(table,aes(Date,Sales))+ geom_point(fill=&#39;#222222&#39;)</code></pre>
 <!-- rnb-plot-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIiMgR3JvdXBpbmcgdGhlIGRhdGFzZXQgYnkgZGF0ZSBhbmQgZ2V0aW5nIHRoZSBzdW1zIG9mIHRoZSBkYXRlcyIsInRiIDwtIHRhYmxlICU+JSAgXG4gIGdyb3VwX2J5KERhdGUpICU+JVxuICBzdW1tYXJpc2UoT3JkZXJzID0gc3VtKFNhbGVzKSkiXX0= -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgR3JvdXBpbmcgdGhlIGRhdGFzZXQgYnkgZGF0ZSBhbmQgZ2V0aW5nIHRoZSBzdW1zIG9mIHRoZSBkYXRlcyIsInRiIDwtIHRhYmxlICU+JSAgXG4gIGdyb3VwX2J5KERhdGUpICU+JVxuICBzdW1tYXJpc2UoY291bnRzID0gc3VtKFNhbGVzKSkiXX0= -->
 <pre class="r"><code># Grouping the dataset by date and geting the sums of the dates
 tb &lt;- table %&gt;%  
   group_by(Date) %&gt;%
-  summarise(Orders = sum(Sales))</code></pre>
+  summarise(counts = sum(Sales))</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIiMgUGxvdGluZyB0aGUgYW5vbWFsaWVzIGluIHRoZSBkYXRhc2V0IiwidGIgJT4lXG4gIHRpbWVfZGVjb21wb3NlKE9yZGVycykgJT4lXG4gIGFub21hbGl6ZShyZW1haW5kZXIsIG1ldGhvZCA9IFwiZ2VzZFwiKSAlPiVcbiAgdGltZV9yZWNvbXBvc2UoKSAlPiVcbiAgcGxvdF9hbm9tYWxpZXMoY29sb3Jfbm8gPSAnIzAzOGI4ZCcsIGNvbG9yX3llcyA9ICcjMjIyMjIyJyApIl19 -->
+<!-- rnb-source-begin eyJkYXRhIjpbIiMgUGxvdGluZyB0aGUgYW5vbWFsaWVzIGluIHRoZSBkYXRhc2V0IiwidGIgJT4lXG4gIHRpbWVfZGVjb21wb3NlKGNvdW50cykgJT4lXG4gIGFub21hbGl6ZShyZW1haW5kZXIsIG1ldGhvZCA9IFwiZ2VzZFwiKSAlPiVcbiAgdGltZV9yZWNvbXBvc2UoKSAlPiVcbiAgcGxvdF9hbm9tYWxpZXMoY29sb3Jfbm8gPSAnIzAzOGI4ZCcsIGNvbG9yX3llcyA9ICcjMjIyMjIyJyApIl19 -->
 <pre class="r"><code># Ploting the anomalies in the dataset
 tb %&gt;%
-  time_decompose(Orders) %&gt;%
+  time_decompose(counts) %&gt;%
   anomalize(remainder, method = &quot;gesd&quot;) %&gt;%
   time_recompose() %&gt;%
   plot_anomalies(color_no = &#39;#038b8d&#39;, color_yes = &#39;#222222&#39; )</code></pre>
@@ -373,10 +373,10 @@ tb %&gt;%
 <!-- rnb-plot-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>A few anomalies in the dataset</p>
+<p>A few anomalies in the dataset, with mostly high sales</p>
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKYXV0aG9yOiBleWFuCmRhdGU6IDIzLzAxLzIwMjEKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQpgYGB7cn0KbGlicmFyeSgndGlkeXZlcnNlJykKbGlicmFyeSgnYW5vbWFsaXplJykKbGlicmFyeSgndGliYmxldGltZScpCmBgYAoKYGBge3IgYW5vbWFseV9kZXRlY3Rpb259CiMgUmVhZGluZyB0aGUgc2FsZXMgbG9ncwp1cmwgPC0gJ2h0dHA6Ly9iaXQubHkvQ2FycmVGb3VyU2FsZXNEYXRhc2V0JwpzYWxlcyA8LSByZWFkLmNzdih1cmwpCmhlYWQoc2FsZXMpCmBgYApgYGB7cn0Kc3RyKHNhbGVzKQpgYGAKYGBge3J9CiMgQ2hhbmdpbmcgdGhlIGRhdGUgY29sdW1uIGZyb20gYSBjaGFyYWN0ZXIgdG8gZGF0ZSBjb2x1bW4Kc2FsZXMkRGF0ZSA8LSBhcy5EYXRlKHNhbGVzJERhdGUsICIlbS8lZC8lWSIpCnN0cihzYWxlcykKYGBgCmBgYHtyfQojIENyZWF0aW5nIGEgdGlibGUgdGFibGUgZnJvbSB0aGUgc2FsZXMgbG9ncwp0YWJsZSA8LSBhc190YmxfdGltZShzYWxlcyxpbmRleCA9IERhdGUpCmhlYWQodGFibGUsMTApCmBgYApgYGB7cn0KIyBQbG90aW5nIHRoZSBsb2dzIHRvIHNlZSBob3cgdGhleSBhcmUgZGlzdHJpYnV0ZWQKZ2dwbG90KHRhYmxlLGFlcyhEYXRlLFNhbGVzKSkrIGdlb21fcG9pbnQoZmlsbD0nIzIyMjIyMicpCmBgYApgYGB7cn0KIyBHcm91cGluZyB0aGUgZGF0YXNldCBieSBkYXRlIGFuZCBnZXRpbmcgdGhlIHN1bXMgb2YgdGhlIGRhdGVzCnRiIDwtIHRhYmxlICU+JSAgCiAgZ3JvdXBfYnkoRGF0ZSkgJT4lCiAgc3VtbWFyaXNlKE9yZGVycyA9IHN1bShTYWxlcykpCmBgYAoKYGBge3J9CiMgUGxvdGluZyB0aGUgYW5vbWFsaWVzIGluIHRoZSBkYXRhc2V0CnRiICU+JQogIHRpbWVfZGVjb21wb3NlKE9yZGVycykgJT4lCiAgYW5vbWFsaXplKHJlbWFpbmRlciwgbWV0aG9kID0gImdlc2QiKSAlPiUKICB0aW1lX3JlY29tcG9zZSgpICU+JQogIHBsb3RfYW5vbWFsaWVzKGNvbG9yX25vID0gJyMwMzhiOGQnLCBjb2xvcl95ZXMgPSAnIzIyMjIyMicgKQpgYGAKCkEgZmV3IGFub21hbGllcyBpbiB0aGUgZGF0YXNldA==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKYXV0aG9yOiBleWFuCmRhdGU6IDIzLzAxLzIwMjEKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQpgYGB7cn0KbGlicmFyeSgndGlkeXZlcnNlJykKbGlicmFyeSgnYW5vbWFsaXplJykKbGlicmFyeSgndGliYmxldGltZScpCmBgYAoKYGBge3IgYW5vbWFseV9kZXRlY3Rpb259CiMgUmVhZGluZyB0aGUgc2FsZXMgbG9ncwp1cmwgPC0gJ2h0dHA6Ly9iaXQubHkvQ2FycmVGb3VyU2FsZXNEYXRhc2V0JwpzYWxlcyA8LSByZWFkLmNzdih1cmwpCmhlYWQoc2FsZXMpCmBgYApgYGB7cn0Kc3RyKHNhbGVzKQpgYGAKYGBge3J9CiMgQ2hhbmdpbmcgdGhlIGRhdGUgY29sdW1uIGZyb20gYSBjaGFyYWN0ZXIgdG8gZGF0ZSBjb2x1bW4Kc2FsZXMkRGF0ZSA8LSBhcy5EYXRlKHNhbGVzJERhdGUsICIlbS8lZC8lWSIpCnN0cihzYWxlcykKYGBgCmBgYHtyfQojIENyZWF0aW5nIGEgdGlibGUgdGFibGUgZnJvbSB0aGUgc2FsZXMgbG9ncwp0YWJsZSA8LSBhc190YmxfdGltZShzYWxlcyxpbmRleCA9IERhdGUpCmhlYWQodGFibGUsMTApCmBgYApgYGB7cn0KIyBQbG90aW5nIHRoZSBsb2dzIHRvIHNlZSBob3cgdGhleSBhcmUgZGlzdHJpYnV0ZWQKZ2dwbG90KHRhYmxlLGFlcyhEYXRlLFNhbGVzKSkrIGdlb21fcG9pbnQoZmlsbD0nIzIyMjIyMicpCmBgYApgYGB7cn0KIyBHcm91cGluZyB0aGUgZGF0YXNldCBieSBkYXRlIGFuZCBnZXRpbmcgdGhlIHN1bXMgb2YgdGhlIGRhdGVzCnRiIDwtIHRhYmxlICU+JSAgCiAgZ3JvdXBfYnkoRGF0ZSkgJT4lCiAgc3VtbWFyaXNlKGNvdW50cyA9IHN1bShTYWxlcykpCmBgYAoKYGBge3J9CiMgUGxvdGluZyB0aGUgYW5vbWFsaWVzIGluIHRoZSBkYXRhc2V0CnRiICU+JQogIHRpbWVfZGVjb21wb3NlKGNvdW50cykgJT4lCiAgYW5vbWFsaXplKHJlbWFpbmRlciwgbWV0aG9kID0gImdlc2QiKSAlPiUKICB0aW1lX3JlY29tcG9zZSgpICU+JQogIHBsb3RfYW5vbWFsaWVzKGNvbG9yX25vID0gJyMwMzhiOGQnLCBjb2xvcl95ZXMgPSAnIzIyMjIyMicgKQpgYGAKQSBmZXcgYW5vbWFsaWVzIGluIHRoZSBkYXRhc2V0LCB3aXRoIG1vc3RseSBoaWdoIHNhbGVz</div>
 
 
 

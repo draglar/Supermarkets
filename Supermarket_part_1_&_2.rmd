@@ -23,112 +23,11 @@ No null values were found
 ```{r}
 dim(sup_market)
 sup_market[duplicated(sup_market)]
-
 ```
 No duplicates
 ```{r}
 summary(sup_market)
 ```
-```{r}
-invoice         <-sup_market$Invoice.ID
-branch          <-sup_market$Branch
-customer.type   <-sup_market$Customer.type
-gender          <-sup_market$Gender
-product.line    <-sup_market$Product.line
-unit.price      <-sup_market$Unit.price
-quantity        <-sup_market$Quantity
-tax             <-sup_market$Tax
-date            <-sup_market$Date
-time            <-sup_market$Time
-payment         <-sup_market$Payment
-cogs            <-sup_market$cogs
-gross.margin    <-sup_market$gross.margin.percentage
-gross.income    <-sup_market$gross.income
-rating          <-sup_market$Rating
-total           <-sup_market$Total
-```
-```{r}
-out <- boxplot(unit.price)$out
-print(paste(length(out),'outliers'))
-```
-```{r}
-out <- boxplot(quantity)$out
-print(paste(length(out),'outliers'))
-```
-```{r}
-out <- boxplot(tax)$out
-print(paste(length(out),'outliers'))
-```
-```{r}
-out <- boxplot(cogs)$out
-print(paste(length(out),'outliers'))
-```
-```{r}
-out <- boxplot(gross.income)$out
-print(paste(length(out),'outliers'))
-```
-```{r}
-out <- boxplot(total)$out
-print(paste(length(out),'outliers'))
-```
-The number of outliers was either 9 or 0. It can be assumed the outliers in the dataset occured from the same customers.The outliers will stay so as not to form a biased analysis on customers with specific spending habits.
-
-```{r}
-load('kira.RData')
-```
-```{r}
-univar('Branch',sup_market,'category')
-```
-Most customers bought from branch A, while the fewest were from branch C
-```{r}
-univar('Customer.type',sup_market,'category')
-```
-The type of customers in the dataset were the same number
-```{r}
-univar('Gender',sup_market,'category')
-```
-The genders were balanced in a 1:1 ratio
-```{r}
-univar('Product.line',sup_market,'category')
-```
-Most products bought were fashion accessories then food and beverages
-```{r}
-univar('Quantity',sup_market,'category')
-```
-Most products had a rating of 10
-```{r}
-univar('Payment',sup_market,'category')
-```
-Most customers paid via E-wallet while the least paid via credit card
-```{r}
-univar('Unit.price',sup_market)
-```
-Unit.price ranged from 99.96 to 10.08, and most prices lie between 15.279 and 97.222
-The average price was at 55.67, most items had a price of 83.77.
-
-```{r}
-univar('Tax',sup_market)
-```
-Taxes ranged from 49.65 to 0.5085, and most taxes lie between 1.95 and 39.16
-The average tax was at 15.379, most customers had a tax of 39.48.
-the graph is mostly skewed since most customers lie on the left side.
-```{r}
-univar('cogs',sup_market)
-```
-
-```{r}
-univar('gross.income',sup_market)
-```
-gross income ranged from 49.65 to 0.5085, and most gross incomes lie between 1.95 and 39.16
-The average gross income was at 15.379, most customers had a gross income of 39.48.
-the graph is mostly skewed since most customers are average with a few on the high end
-Taxes and gross income are directly proportional
-```{r}
-univar('Total',sup_market)
-```
-Totals ranged from 10.67 and 1042.65 , and most Totals lie between 41.07 and 822.49
-The average Total was at 15.379, most customers had a Totals of 829.08.
-the graph is mostly skewed since most customers are average spenders with a few on the high end
 
 # Reducing the number of features using PCA
 ```{r pca}
